@@ -1,0 +1,21 @@
+---
+
+- name: Configure Server Networking and GRUB and IPs
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  vars_files:
+    - ../group_vars/new_servers.yml
+
+  tasks:
+    - name: Configure networking
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: linux_network_settings.yml
+
+    - name: Configure IPs
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: linux_network_settings_ips.yml
+

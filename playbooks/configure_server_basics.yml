@@ -1,0 +1,23 @@
+---
+
+- name: Configure Server Basics
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Install common server packages
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: linux_server_packages.yml
+
+    - name: Add common aliases
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: linux_server_defaults.yml
+
+    - name: Disable SELinux and firewalld
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: linux_server_security.yml
+

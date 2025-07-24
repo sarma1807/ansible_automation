@@ -1,0 +1,17 @@
+---
+
+- name: Generate and exchange SSH keys for root user
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: SSH key creation tasks
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: ssh_keys_create_for_root.yml
+
+    - name: Exchange SSH keys
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: ssh_keys_distribute_for_root.yml
+

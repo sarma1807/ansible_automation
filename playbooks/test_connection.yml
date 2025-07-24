@@ -1,0 +1,12 @@
+---
+
+- name: Test Connection and Run Hostname
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Run the connection test task
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: test_connection.yml
+

@@ -1,0 +1,12 @@
+---
+
+- name: Cassandra Prerequisites
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Create Cassandra OS User
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: cassandra_create_os_user.yml
+
