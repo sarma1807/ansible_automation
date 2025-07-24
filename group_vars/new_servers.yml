@@ -1,0 +1,69 @@
+---
+# This file defines network configurations for the 'new_servers' group.
+network_configurations:
+  tempserver:
+    new_hostname: rcli.OracleByExample.com
+    interfaces:
+      - name: eth0
+        ipv4_method: manual
+        ipv4_address: 192.168.1.186/24
+        ipv4_gateway: 192.168.1.1
+        ipv6_method: disabled
+        autoconnect: yes
+      - name: eth1
+        ipv4_method: auto
+        ipv6_method: disabled
+        autoconnect: yes
+  tcass1:
+    new_hostname: cass1.OracleByExample.com
+    interfaces:
+      - name: eth0
+        ipv4_method: manual
+        ipv4_address: 192.168.1.171/24
+        ipv4_gateway: 192.168.1.1
+        ipv6_method: disabled
+        autoconnect: yes
+      - name: eth1
+        ipv4_method: auto
+        ipv6_method: disabled
+        autoconnect: yes
+  tcass2:
+    new_hostname: cass2.OracleByExample.com
+    interfaces:
+      - name: eth0
+        ipv4_method: manual
+        ipv4_address: 192.168.1.172/24
+        ipv4_gateway: 192.168.1.1
+        ipv6_method: disabled
+        autoconnect: yes
+      - name: eth1
+        ipv4_method: auto
+        ipv6_method: disabled
+        autoconnect: yes
+  tcass3:
+    new_hostname: cass3.OracleByExample.com
+    interfaces:
+      - name: eth0
+        ipv4_method: manual
+        ipv4_address: 192.168.1.173/24
+        ipv4_gateway: 192.168.1.1
+        ipv6_method: disabled
+        autoconnect: yes
+      - name: eth1
+        ipv4_method: auto
+        ipv6_method: disabled
+        autoconnect: yes
+  tpromgraf:
+    new_hostname: promgraf.OracleByExample.com
+    interfaces:
+      - name: eth0
+        ipv4_method: manual
+        ipv4_address: 192.168.1.181/24
+        ipv4_gateway: 192.168.1.1
+        ipv6_method: disabled
+        autoconnect: yes
+      - name: eth1
+        ipv4_method: auto
+        ipv6_method: disabled
+        autoconnect: yes
+
