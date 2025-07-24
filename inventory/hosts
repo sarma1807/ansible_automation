@@ -1,0 +1,35 @@
+[webservers]
+# web1.example.com
+# web2.example.com
+
+[dbservers]
+# db1.example.com
+
+[ansible_server]
+ansible   ansible_host=192.168.1.201  ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+
+[new_servers]
+tcass1    ansible_host=192.168.1.79  ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+tcass2    ansible_host=192.168.1.77  ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+tcass3    ansible_host=192.168.1.78  ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+tpromgraf ansible_host=192.168.1.96  ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+
+[cass_servers_pass]
+cass1    ansible_host=192.168.1.171 ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+cass2    ansible_host=192.168.1.172 ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+cass3    ansible_host=192.168.1.173 ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+promgraf ansible_host=192.168.1.181 ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+
+[test_servers_pass]
+rcli     ansible_host=192.168.1.186 ansible_connection=ssh ansible_user=root ansible_ssh_pass=oracle
+
+[cass_servers_ssh]
+cass1    ansible_host=192.168.1.171 ansible_connection=ssh ansible_user=root
+cass2    ansible_host=192.168.1.172 ansible_connection=ssh ansible_user=root
+cass3    ansible_host=192.168.1.173 ansible_connection=ssh ansible_user=root
+promgraf ansible_host=192.168.1.181 ansible_connection=ssh ansible_user=root
+
+[test_servers_ssh]
+rcli     ansible_host=192.168.1.186 ansible_connection=ssh ansible_user=root
+
+
