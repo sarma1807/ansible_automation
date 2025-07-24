@@ -1,0 +1,90 @@
+---
+
+- name: Get active network connections with UUIDs
+  ansible.builtin.command: "nmcli -t -f UUID,NAME,DEVICE c show --active"
+  register: nmcli_connections
+  changed_when: false
+  become: yes
+
+- name: Identify connections to rename from 'Wired connection'
+  ansible.builtin.set_fact:
+    connections_to_rename: >-
+      {{
+        nmcli_connections.stdout.splitlines()
+        | map('split', ':')
+        | selectattr(1, 'match', '^Wired connection')
+        | selectattr(2, 'match', '^eth')
+        | list
+      }}
+
+- name: Rename 'Wired connection' to match its device name
+  ansible.builtin.command: "nmcli connection modify {{ item.0 }} con-name {{ item.2 }}"
+  loop: "{{ connections_to_rename }}"
+  loop_control:
+    label: "Renaming connection for {{ item.2 }}"
+  become: yes
+  when: connections_to_rename | length > 0
+
+- name: Get all configured connection profiles
+  ansible.builtin.command: "nmcli -t -f NAME c show"
+  register: nmcli_all_profiles
+  changed_when: false
+  become: yes
+
+- name: Get all active connection profiles
+  ansible.builtin.command: "nmcli -t -f NAME c show --active"
+  register: nmcli_active_profiles
+  changed_when: false
+  become: yes
+
+- name: Identify inactive connection profiles
+  ansible.builtin.set_fact:
+    inactive_profiles: "{{ nmcli_all_profiles.stdout.splitlines() | difference(nmcli_active_profiles.stdout.splitlines()) }}"
+
+- name: Delete inactive connection profiles
+  ansible.builtin.command: "nmcli connection delete '{{ item }}'"
+  loop: "{{ inactive_profiles }}"
+  loop_control:
+    label: "Deleting profile '{{ item }}'"
+  become: yes
+  when: inactive_profiles | length > 0
+
+- name: Set hostname from variables
+  ansible.builtin.hostname:
+    name: "{{ network_configurations[inventory_hostname].new_hostname }}"
+  become: yes
+  when:
+    - inventory_hostname in network_configurations
+    - network_configurations[inventory_hostname].new_hostname is defined
+
+- name: Apply network configuration from variables
+  community.general.nmcli:
+    conn_name: "{{ item.name }}"
+    ifname: "{{ item.name }}"
+    type: ethernet
+    method4: "{{ item.ipv4_method }}"
+    ip4: "{{ item.ipv4_address | default(omit) }}"
+    gw4: "{{ item.ipv4_gateway | default(omit) }}"
+    method6: "{{ item.ipv6_method | default('disabled') }}"
+    autoconnect: "{{ item.autoconnect | default(yes) }}"
+    state: present
+  loop: "{{ network_configurations[inventory_hostname].interfaces }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: yes
+  when:
+    - inventory_hostname in network_configurations
+    - network_configurations[inventory_hostname].interfaces is defined
+
+- name: Display final message
+  ansible.builtin.debug:
+    msg: "Completed reconfiguring servers. All servers will be restarted now, and they will start with new IP addresses."
+
+- name: Reboot the server to apply network changes
+  ansible.builtin.reboot:
+    pre_reboot_delay: 10
+    post_reboot_delay: 10
+    reboot_timeout: 10
+  become: yes
+
+

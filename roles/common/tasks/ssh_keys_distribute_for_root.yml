@@ -1,0 +1,10 @@
+---
+
+- name: Add all public keys to authorized_keys on every server
+  ansible.posix.authorized_key:
+    user: root
+    key: "{{ hostvars[item]['public_keys']['content'] | b64decode }}"
+    state: present
+  with_items: "{{ ansible_play_hosts_all }}"
+  when: hostvars[item].public_keys.content is defined
+

@@ -1,0 +1,7 @@
+---
+
+- name: Create cassgrp group
+  ansible.builtin.group:
+    name: cassgrp
+    state: present
+

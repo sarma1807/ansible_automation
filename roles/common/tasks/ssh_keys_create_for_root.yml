@@ -1,0 +1,31 @@
+---
+
+- name: Ensure .ssh directory exists for root user
+  ansible.builtin.file:
+    path: /root/.ssh
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Check if SSH key already exists for root user
+  ansible.builtin.stat:
+    path: /root/.ssh/id_rsa
+  register: ssh_key_stat
+
+- name: Create SSH key for root user if it does not exist
+  community.crypto.openssh_keypair:
+    path: /root/.ssh/id_rsa
+    owner: root
+    group: root
+    mode: 0600
+    type: rsa
+    size: 4096
+    comment: 'root@{{ inventory_hostname }} - created by Ansible.'
+  when: not ssh_key_stat.stat.exists
+
+- name: Fetch the public key from each server
+  ansible.builtin.slurp:
+    src: /root/.ssh/id_rsa.pub
+  register: public_keys
+

@@ -1,0 +1,29 @@
+---
+
+- ansible.builtin.set_fact: custom_aliases_file="/etc/profile.d/00-custom-aliases.sh"
+
+- name: Ensure custom aliases file exists and is executable
+  ansible.builtin.file:
+    path: "{{ custom_aliases_file }}"
+    state: touch
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+
+- name: Add alias for disk usage to the custom aliases file
+  ansible.builtin.lineinfile:
+    path: "{{ custom_aliases_file }}"
+    line: "alias d='du -hx --max-depth=1'"
+    regexp: "^alias d="
+    state: present
+  become: yes
+
+- name: Add alias for files listing to the custom aliases file
+  ansible.builtin.lineinfile:
+    path: "{{ custom_aliases_file }}"
+    line: "alias l='ls -lh --color=auto'"
+    regexp: "^alias l="
+    state: present
+  become: yes
+

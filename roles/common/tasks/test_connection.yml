@@ -1,0 +1,16 @@
+---
+
+- name: Run hostname command
+  ansible.builtin.command: hostname -s
+  register: hostname_output
+  changed_when: false
+
+- name: Get IP from host
+  ansible.builtin.command: hostname -I
+  register: hostname_ip_output
+  changed_when: false
+
+- name: Display hostname
+  ansible.builtin.debug:
+    msg: "The hostname is : {{ hostname_output.stdout }} running with IP : {{ hostname_ip_output.stdout }}"
+

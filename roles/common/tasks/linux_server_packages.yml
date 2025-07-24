@@ -1,0 +1,87 @@
+---
+
+- name: Ensure EPEL repository is enabled (on RedHat family systems)
+  ansible.builtin.package:
+    name: epel-release
+    state: present
+  become: yes
+  when: ansible_facts.os_family == "RedHat"
+
+- name: Ensure chrony package is installed
+  ansible.builtin.package:
+    name: chrony
+    state: present
+  become: yes
+
+- name: Ensure net-tools package is installed
+  ansible.builtin.package:
+    name: net-tools
+    state: present
+  become: yes
+
+- name: Ensure wget package is installed
+  ansible.builtin.package:
+    name: wget
+    state: present
+  become: yes
+
+- name: Ensure tar package is installed
+  ansible.builtin.package:
+    name: tar
+    state: present
+  become: yes
+
+- name: Ensure telnet package is installed
+  ansible.builtin.package:
+    name: telnet
+    state: present
+  become: yes
+
+- name: Ensure bind-utils package is installed
+  ansible.builtin.package:
+    name: bind-utils
+    state: present
+  become: yes
+
+- name: Ensure tree package is installed
+  ansible.builtin.package:
+    name: tree
+    state: present
+  become: yes
+
+- name: Ensure git-all package is installed
+  ansible.builtin.package:
+    name: git-all
+    state: present
+  become: yes
+
+- name: Ensure python-pip package is installed
+  ansible.builtin.package:
+    name: python-pip
+    state: present
+  become: yes
+
+- name: Ensure zip package is installed
+  ansible.builtin.package:
+    name: zip
+    state: present
+  become: yes
+
+- name: Ensure java-1.8.0-openjdk-devel package is installed
+  ansible.builtin.package:
+    name: java-1.8.0-openjdk-devel
+    state: present
+  become: yes
+
+- name: Ensure java-11-openjdk-devel package is installed
+  ansible.builtin.package:
+    name: java-11-openjdk-devel
+    state: present
+  become: yes
+
+- name: Ensure java-17-openjdk-devel package is installed
+  ansible.builtin.package:
+    name: java-17-openjdk-devel
+    state: present
+  become: yes
+

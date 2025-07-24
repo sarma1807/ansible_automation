@@ -1,0 +1,20 @@
+---
+
+- name: Disable SELinux if it is not already disabled
+  ansible.posix.selinux:
+    state: disabled
+    policy: targeted
+  become: yes
+
+- name: Ensure the firewalld service is disabled
+  ansible.builtin.command: systemctl disable firewalld
+  changed_when: false
+  become: yes
+
+- name: Reboot the server to apply security changes
+  ansible.builtin.reboot:
+    pre_reboot_delay: 30
+    post_reboot_delay: 30
+    reboot_timeout: 100
+  become: yes
+
