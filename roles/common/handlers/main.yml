@@ -1,0 +1,24 @@
+---
+
+- name: Delete temporary udev file
+  ansible.builtin.file:
+    path: "{{ ifnames_file_temp }}"
+    state: absent
+  become: yes
+
+- name: Update GRUB
+  block:
+    - name: Update GRUB on Debian-based systems
+      ansible.builtin.command: update-grub
+      when: ansible_facts.os_family == "Debian"
+
+    - name: Set GRUB config path for RHEL-based systems
+      ansible.builtin.set_fact:
+        grub_cfg_path: "{{ '/boot/efi/EFI/redhat/grub.cfg' if ansible_facts.virtualization_type == 'xen' and ansible_facts.virtualization_role == 'guest' else '/boot/grub2/grub.cfg' }}"
+      when: ansible_facts.os_family == "RedHat"
+
+    - name: Update GRUB on RHEL-based systems
+      ansible.builtin.command: "grub2-mkconfig -o {{ grub_cfg_path }}"
+      when: ansible_facts.os_family == "RedHat"
+  become: yes
+
